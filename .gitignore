@@ -67,3 +67,6 @@ secrets.py
 
 # DB
 *.sqlite3
+
+# media
+media/
