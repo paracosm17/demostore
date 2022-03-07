@@ -64,3 +64,6 @@ venv.bak/
 
 # Secrets
 secrets.py
+
+# DB
+*.sqlite3
