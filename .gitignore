@@ -62,11 +62,8 @@ venv.bak/
 .idea/*
 .env
 
-# Secrets
+# Django
 secrets.py
-
-# DB
 *.sqlite3
-
-# media
 media/
+migrations/
