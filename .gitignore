@@ -63,7 +63,7 @@ venv.bak/
 .env
 
 # Django
+migrations/
 secrets.py
 *.sqlite3
 media/
-migrations/
