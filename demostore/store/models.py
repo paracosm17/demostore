@@ -71,3 +71,27 @@ class Purchase(models.Model):
     
     def __str__(self) -> str:
         return self.buyer.__str__() + ' | ' + self.product.__str__() + ' ' + f'({self.quantity})'
+
+class Favourite(models.Model):
+    user = models.ForeignKey(TgUser, on_delete=models.PROTECT, verbose_name='Пользователь')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
+
+    class Meta:
+        verbose_name = 'Избранный товар'
+        verbose_name_plural = 'Избранные'
+    
+    def __str__(self) -> str:
+        return self.user.__str__() + ' | ' + self.product.__str__()
+
+class Basket(models.Model):
+    buyer = models.ForeignKey(TgUser, on_delete=models.PROTECT, verbose_name='Покупатель')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name='Товар')
+    quantity = models.IntegerField(blank=True, verbose_name='Количество')
+    added = models.DateTimeField(auto_now_add=True, verbose_name='Добавлен')
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+    
+    def __str__(self) -> str:
+        return self.buyer.__str__() + ' | ' + self.product.__str__() + ' ' + f'({self.quantity})'
