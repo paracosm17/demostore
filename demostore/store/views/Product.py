@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -18,7 +19,9 @@ class ProductApi(APIView):
         id = request.query_params.get('id')
         category = request.query_params.get('category')
         all = request.query_params.get('all')
-
+        page = request.query_params.get('page')
+        products = Product.objects.exclude(quantity=0)
+        
         if validate_id(id):
             # If query param 'id' is valid, will return
             # one serialized Product model by id
@@ -29,30 +32,34 @@ class ProductApi(APIView):
                 return Response(serialized_product.data)
             raise serializers.ValidationError("This product does not exist!")
         
+        if all in ['True', 'true', '1']:
+            # If query param 'all' is valid, will return
+            # all serialized Products
+            products = Product.objects.all()
+        elif all and all not in ['True', 'true', '1']:
+            raise serializers.ValidationError("Param all must be 'true', 'True' or '1'")
+
         if validate_id(category):
             # If query param 'category' is valid, will return
             # products by category id
             category = int(category)
             if category in [p.id for p in Category.objects.all()]:
-                products = Product.objects.filter(category__id=category)
-                if all not in ['True', 'true', '1']:
-                    products = products.exclude(quantity=0)
-                serialized_products = ProductSerializer(products, context={"request": request}, many=True)
-                return Response(serialized_products.data)
-            raise serializers.ValidationError("This category does not exist!")
-       
-        if all in ['True', 'true', '1']:
-            # If query param 'all' is valid, will return
-            # all serialized Products
-            products = Product.objects.all()
-            serialized_products = ProductSerializer(products, context={"request": request}, many=True)
-            return Response(serialized_products.data)
-        elif all and all not in ['True', 'true', '1']:
-            raise serializers.ValidationError("Param all must be 'true', 'True' or '1'")
+                products = products.filter(category__id=category)
+            else:
+                raise serializers.ValidationError("This category does not exist!")
+        
+        if validate_id(page) and int(page) > 0:
+            page = int(page)
+            paginator = Paginator(products, 5)
+            if page == 1 or paginator.page(page-1).has_next():
+                serialized_page_product = ProductSerializer(paginator.page(page), 
+                context={"request": request}, many=True)
+                return Response(serialized_page_product.data)
+            else:
+                raise serializers.ValidationError(f"This page does not exist! The last page is {paginator.num_pages}")
         
         # If there are no query params, return products, whose quantity is greater than zero  
-        product = Product.objects.exclude(quantity=0)
-        serialized_product = ProductSerializer(product, context={"request": request}, many=True)
+        serialized_product = ProductSerializer(products, context={"request": request}, many=True)
         return Response(serialized_product.data)
 
     def post(self, request):
