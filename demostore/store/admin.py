@@ -1,5 +1,5 @@
 from django.contrib import admin
-from store.models import TgUser, Category, Product, Purchase, Basket
+from store.models import TgUser, Category, Product, Purchase
 
 class PurchaseAdminInline(admin.TabularInline):
     '''
@@ -15,22 +15,6 @@ class PurchaseAdminInline(admin.TabularInline):
         # Function to get total purchase amount
         return obj.quantity * obj.product.price
     get_total_sum.short_description = "Общая сумма покупки"
-
-class BasketAdminInline(admin.TabularInline):
-    '''
-    Class for viewing user's purchases on the user's page
-    '''
-    model = Basket
-    fields = ('product', 'quantity', 'get_total_sum', 'added')
-    list_display = ('product', 'quantity', 'get_total_sum', 'added')
-    readonly_fields = ('product', 'quantity', 'get_total_sum', 'added')
-    extra = 0
-    
-    def get_total_sum(self, obj) -> float:
-        user_id = TgUser.objects.get(id=obj.buyer.id)
-        prices_list = [p.product.price for p in Basket.objects.get(buyer=user_id)]
-        return sum(prices_list)
-    get_total_sum.short_description = "Общая сумма корзины"
 
 class ProductAdminInline(admin.TabularInline):
     '''
@@ -50,7 +34,7 @@ class TgUserAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_id', 'first_name', 'username', 'last_name', 'balance', 'phone', 'email', 'language_code', 'added')
     readonly_fields = ('id', 'added')
     list_display_links = ('id', 'user_id', 'first_name')
-    inlines = (PurchaseAdminInline, BasketAdminInline)
+    inlines = (PurchaseAdminInline, )
     ordering = ('id', 'added')
     search_fields = ('id', 'user_id', 'first_name', 'username', 'last_name', 'balance', 'phone', 'email', 'language_code', 'added')
 
