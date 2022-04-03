@@ -83,7 +83,8 @@ class ProductAdmin(admin.ModelAdmin):
     """
     Class for the model Product
     """
-    fields = ('id', 'name', 'price', 'quantity', 'category', ('image', 'full_image'), 'added')
+    fields = ('id', 'name', 'price', 'quantity', 'category', 'description', 
+             ('image', 'full_image'), 'added')
     list_display = ('id', 'name', 'image_view', 'price', 'quantity', 'category', 'added')
     list_display_links = ('id', 'name', 'image_view')
     readonly_fields = ('id', 'image_view', 'added', 'full_image')
