@@ -6,9 +6,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class TgUser(models.Model):
     user_id = models.BigIntegerField(unique=True, blank=False, verbose_name='Telegram id')
-    first_name = models.CharField(max_length=128, blank=False, verbose_name='Имя')
-    last_name = models.CharField(max_length=128, blank=True, default='', verbose_name='Фамилия')
-    username = models.CharField(max_length=128, blank=True, default='', verbose_name='Юзернейм')
+    first_name = models.CharField(max_length=64, blank=False, verbose_name='Имя')
+    last_name = models.CharField(max_length=64, blank=True, default='', verbose_name='Фамилия')
+    username = models.CharField(max_length=32, blank=True, default='', verbose_name='Юзернейм')
     balance = models.DecimalField(max_digits=20, decimal_places=2, default=0, blank=False, verbose_name='Баланс')
     language_code = models.CharField(max_length=8, blank=True, verbose_name='Код языка')
     phone = PhoneNumberField(blank=True, null=True, verbose_name='Номер')
