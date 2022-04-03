@@ -64,7 +64,5 @@ idea/
 .env
 
 # Django
-migrations/
 secrets.py
 *.sqlite3
-media/
