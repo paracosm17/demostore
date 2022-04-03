@@ -59,8 +59,7 @@ venv.bak/
 
 # Pyre type checker
 .pyre/
-.idea/*
-idea/
+.demostore/idea/
 .env
 
 # Django
