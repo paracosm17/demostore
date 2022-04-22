@@ -46,7 +46,7 @@ class AppealApi(APIView):
 
     def post(self, request):
         appeal = request.data
-        user_id = TgUser.objects.get(user_id=appeal['user']).id
+        user_id = TgUser.objects.get(user_id=appeal['user_id']).id
         appeal['user'] = user_id
         serializer = AppealCreateSerializer(data=appeal)
         if serializer.is_valid(raise_exception=True):

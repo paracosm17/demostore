@@ -23,6 +23,7 @@ class ProductApi(APIView):
     def get(self, request, *args, **kwargs):
         product_id = request.query_params.get('id')
         category = request.query_params.get('category')
+        all = request.query_params.get('all')
         page = request.query_params.get('page')
         products = Product.objects.exclude(quantity=0)
 
