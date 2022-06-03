@@ -1,10 +1,10 @@
 from django.urls import path
 
-from store.views.Appeal import AppealApi
-from store.views.Category import CategoryApi
-from store.views.Product import ProductApi
-from store.views.Purchase import PurchaseApi
-from store.views.TgUser import TgUserApi, TgUserUpdate
+from store.views import AppealApi
+from store.views import CategoryApi
+from store.views import ProductApi
+from store.views import PurchaseApi
+from store.views import TgUserApi, TgUserUpdate
 
 urlpatterns = [
     path('categories/', CategoryApi.as_view()),
